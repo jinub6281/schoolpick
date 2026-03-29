@@ -208,9 +208,11 @@ export default function HomePage() {
   function saveSelection() {
     if (!selectedSchool) return;
 
+    const schoolValue = selectedSchool;
+
     localStorage.setItem(
       "schoolpick:selectedSchool",
-      JSON.stringify(selectedSchool)
+      JSON.stringify(schoolValue)
     );
     localStorage.setItem("schoolpick:selectedRegion", region);
     localStorage.setItem("schoolpick:selectedSchoolType", schoolType);
@@ -302,6 +304,8 @@ export default function HomePage() {
       return;
     }
 
+    const schoolValue = selectedSchool;
+
     async function loadClasses() {
       setClassLoading(true);
       setClassError("");
@@ -309,9 +313,9 @@ export default function HomePage() {
 
       try {
         const params = new URLSearchParams({
-          officeCode: selectedSchool.ATPT_OFCDC_SC_CODE,
-          schoolCode: selectedSchool.SD_SCHUL_CODE,
-          schoolKind: selectedSchool.SCHUL_KND_SC_NM,
+          officeCode: schoolValue.ATPT_OFCDC_SC_CODE,
+          schoolCode: schoolValue.SD_SCHUL_CODE,
+          schoolKind: schoolValue.SCHUL_KND_SC_NM,
           grade,
           year: String(new Date().getFullYear()),
         });
@@ -377,6 +381,8 @@ export default function HomePage() {
       return;
     }
 
+    const schoolValue = selectedSchool;
+
     async function loadSchoolInfo() {
       setSchoolInfoLoading(true);
       setSchoolInfoError("");
@@ -385,13 +391,13 @@ export default function HomePage() {
       try {
         const regionName =
           regions.find((item) => item.code === region)?.name ||
-          selectedSchool.ATPT_OFCDC_SC_NM;
+          schoolValue.ATPT_OFCDC_SC_NM;
 
         const params = new URLSearchParams({
-          schoolName: selectedSchool.SCHUL_NM,
+          schoolName: schoolValue.SCHUL_NM,
           regionName,
           schoolType,
-          address: selectedSchool.ORG_RDNMA || "",
+          address: schoolValue.ORG_RDNMA || "",
         });
 
         const res = await fetch(`/api/schoolinfo?${params.toString()}`);
@@ -420,6 +426,8 @@ export default function HomePage() {
       return;
     }
 
+    const schoolValue = selectedSchool;
+
     async function loadStudentCount() {
       setStudentCountLoading(true);
       setStudentCountError("");
@@ -428,13 +436,13 @@ export default function HomePage() {
       try {
         const regionName =
           regions.find((item) => item.code === region)?.name ||
-          selectedSchool.ATPT_OFCDC_SC_NM;
+          schoolValue.ATPT_OFCDC_SC_NM;
 
         const params = new URLSearchParams({
-          schoolName: selectedSchool.SCHUL_NM,
+          schoolName: schoolValue.SCHUL_NM,
           regionName,
           schoolType,
-          address: selectedSchool.ORG_RDNMA || "",
+          address: schoolValue.ORG_RDNMA || "",
         });
 
         const res = await fetch(`/api/schoolinfo/student-count?${params.toString()}`);
